@@ -1,7 +1,7 @@
 package com.example.fraudtector.JSON.SpringLogic.Endpoint;
 
 import com.example.fraudtector.JSON.SpringLogic.NetworkCfg.NetworkCfg;
-import com.example.fraudtector.JSON.SpringLogic.TransDataAttribute.TransDataAttribute;
+import com.example.fraudtector.JSON.SpringLogic.FieldConfiguration.FieldConfiguration;
 import com.example.fraudtector.JSON.SpringLogic.TransSpec.TransSpec;
 import lombok.*;
 
@@ -37,7 +37,7 @@ public class Endpoint implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "endpoint", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<TransDataAttribute> dataAttributes;
+    private List<FieldConfiguration> dataAttributes;
 
 
 

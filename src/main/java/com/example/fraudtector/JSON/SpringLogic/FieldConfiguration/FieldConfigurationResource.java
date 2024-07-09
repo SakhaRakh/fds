@@ -1,4 +1,4 @@
-package com.example.fraudtector.JSON.SpringLogic.TransDataAttribute;
+package com.example.fraudtector.JSON.SpringLogic.FieldConfiguration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,20 +25,20 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping(path = "/dataAttribute")
 
-public class TransDataAttributeResource extends ResponseResourceEntity<TransDataAttribute> {
-    protected final TransDataAttributeService transDataAttributeService;
+public class FieldConfigurationResource extends ResponseResourceEntity<FieldConfiguration> {
+    protected final FieldConfigurationService fieldConfigurationService;
 
     @Autowired
-    public TransDataAttributeResource(TransDataAttributeService transDataAttributeService) {
-        this.transDataAttributeService = transDataAttributeService;
+    public FieldConfigurationResource(FieldConfigurationService fieldConfigurationService) {
+        this.fieldConfigurationService = fieldConfigurationService;
     }
 
     @GetMapping("/list")
-    public ResponseEntity<HttpResponse<List<TransDataAttribute>>> fetchAllData() {
+    public ResponseEntity<HttpResponse<List<FieldConfiguration>>> fetchAllData() {
         HttpStatus httpStatus;
         String httpMessage;
         try {
-            List<TransDataAttribute> fetchedData = transDataAttributeService.findAll();
+            List<FieldConfiguration> fetchedData = fieldConfigurationService.findAll();
             httpStatus = OK;
             httpMessage = "Data Attribute Fetched Successfully";
             return responseWithListData(httpStatus, httpMessage, fetchedData);
@@ -54,7 +54,7 @@ public class TransDataAttributeResource extends ResponseResourceEntity<TransData
         HttpStatus httpStatus;
         String httpMessage;
         try {
-            TransDataAttribute fetchedData = transDataAttributeService.findOne(attrId);
+            FieldConfiguration fetchedData = fieldConfigurationService.findOne(attrId);
             httpStatus = HttpStatus.OK;
             httpMessage = "Data Attribute Fetched Successfully";
             return responseWithData(httpStatus, httpMessage, fetchedData);
@@ -71,17 +71,17 @@ public class TransDataAttributeResource extends ResponseResourceEntity<TransData
     }
 
     @GetMapping("/listByEndpoint/{endpointId}")
-    public List<TransDataAttribute> getDataAttributesByEndpointId(@PathVariable Long endpointId) {
-        return transDataAttributeService.getDataAttributesByEndpointId(endpointId);
+    public List<FieldConfiguration> getDataAttributesByEndpointId(@PathVariable Long endpointId) {
+        return fieldConfigurationService.getDataAttributesByEndpointId(endpointId);
     }
 
 
     @PostMapping
-    public ResponseEntity<?> createDataAttribute(@RequestBody TransDataAttributeDto dataAttrDto) {
+    public ResponseEntity<?> createDataAttribute(@RequestBody FieldConfigurationDto dataAttrDto) {
         HttpStatus httpStatus;
         String httpMessage;
         try {
-            TransDataAttribute createdData = transDataAttributeService.createDataAttribute(dataAttrDto);
+            FieldConfiguration createdData = fieldConfigurationService.createDataAttribute(dataAttrDto);
             httpStatus = HttpStatus.CREATED;
             httpMessage = "Data Attribute Created Successfully";
             return responseWithData(httpStatus, httpMessage, createdData);
@@ -98,11 +98,11 @@ public class TransDataAttributeResource extends ResponseResourceEntity<TransData
     }
 
     @PostMapping("/update")
-    public ResponseEntity<HttpResponse<TransDataAttribute>> update(@RequestBody TransDataAttribute requestData) {
+    public ResponseEntity<HttpResponse<FieldConfiguration>> update(@RequestBody FieldConfiguration requestData) {
         HttpStatus httpStatus;
         String httpMessage;
         try {
-            transDataAttributeService.update(requestData);
+            fieldConfigurationService.update(requestData);
             httpStatus = OK;
             httpMessage = "Data Attribute Updated Successfully";
             return response(httpStatus, httpMessage);
@@ -118,7 +118,7 @@ public class TransDataAttributeResource extends ResponseResourceEntity<TransData
         HttpStatus httpStatus;
         String httpMessage;
         try {
-            transDataAttributeService.removeOne(id);
+            fieldConfigurationService.removeOne(id);
             httpStatus = OK;
             httpMessage = "Data Attribute deleted Successfully";
             return response(httpStatus, httpMessage);

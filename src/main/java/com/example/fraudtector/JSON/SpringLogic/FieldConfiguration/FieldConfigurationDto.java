@@ -1,4 +1,4 @@
-package com.example.fraudtector.JSON.SpringLogic.TransDataAttribute;
+package com.example.fraudtector.JSON.SpringLogic.FieldConfiguration;
 
 import com.example.fraudtector.JSON.Constant.StateType;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class TransDataAttributeDto {
+public class FieldConfigurationDto {
     private String attribute;
     private String fieldTag;
     private String description;

@@ -2,8 +2,8 @@ package com.example.fraudtector.JSON.Core.JSON;
 
 import com.example.fraudtector.JSON.Constant.StateType;
 import com.example.fraudtector.JSON.SpringLogic.Endpoint.EndpointService;
-import com.example.fraudtector.JSON.SpringLogic.TransDataAttribute.TransDataAttribute;
-import com.example.fraudtector.JSON.SpringLogic.TransDataAttribute.TransDataAttributeService;
+import com.example.fraudtector.JSON.SpringLogic.FieldConfiguration.FieldConfiguration;
+import com.example.fraudtector.JSON.SpringLogic.FieldConfiguration.FieldConfigurationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -28,7 +28,7 @@ public class JSONServerConfig {
     private EndpointService endpointService;
 
     @Autowired
-    private TransDataAttributeService transDataAttributeService;
+    private FieldConfigurationService transDataAttributeService;
 
     public Mono<Void> handle(HttpServerRequest request, HttpServerResponse response){
         return request
@@ -41,7 +41,7 @@ public class JSONServerConfig {
     public Mono<Void> handle(HttpServerRequest request, HttpServerResponse response, String body) {
         log.info(body);
         try {
-            List<TransDataAttribute> dataAttr = transDataAttributeService.findAll();
+            List<FieldConfiguration> dataAttr = transDataAttributeService.findAll();
             ObjectMapper om = new ObjectMapper();
             JsonNode jn = om.readTree(body);
             Map<String, Object> storeAttr = new HashMap<>();
@@ -60,7 +60,7 @@ public class JSONServerConfig {
 
             ObjectNode responseMessage = om.createObjectNode();
 
-            for (TransDataAttribute attr : dataAttr) {
+            for (FieldConfiguration attr : dataAttr) {
                 if (attr.getStateType() == StateType.RESPONSE) {
                     if (attr.getParentId() == null) {
                         JsonNode childNode = this.hasChildAttributes(attr.getAttrId(), dataAttr)
@@ -78,7 +78,7 @@ public class JSONServerConfig {
         }
     }
 
-    private JsonNode createChildObjectNode(TransDataAttribute parentAttr, List<TransDataAttribute> dataAttr){
+    private JsonNode createChildObjectNode(FieldConfiguration parentAttr, List<FieldConfiguration> dataAttr){
         ObjectMapper om = new ObjectMapper();
         JsonNode parentNode;
 
@@ -87,7 +87,7 @@ public class JSONServerConfig {
             ((ArrayNode) parentNode).add(this.createArrayChildObjectNode(parentAttr, dataAttr));
         } else if (parentAttr.getDataType().equals("OBJECT")) {
             parentNode = om.createObjectNode();
-            for (TransDataAttribute attr : dataAttr) {
+            for (FieldConfiguration attr : dataAttr) {
                 if(parentAttr.getAttrId().equals(attr.getParentId()) && attr.getStateType() == StateType.RESPONSE) {
                     JsonNode childNode = this.hasChildAttributes(attr.getAttrId(), dataAttr)
                             ? this.createChildObjectNode(attr, dataAttr)
@@ -101,11 +101,11 @@ public class JSONServerConfig {
         return parentNode;
     }
 
-    private JsonNode createArrayChildObjectNode(TransDataAttribute parentAttr, List<TransDataAttribute> dataAttr){
+    private JsonNode createArrayChildObjectNode(FieldConfiguration parentAttr, List<FieldConfiguration> dataAttr){
         ObjectMapper om = new ObjectMapper();
         ObjectNode childNode = om.createObjectNode();
 
-        for (TransDataAttribute attr : dataAttr) {
+        for (FieldConfiguration attr : dataAttr) {
             if (parentAttr.getAttrId().equals(attr.getParentId()) && attr.getStateType() == StateType.RESPONSE) {
                 JsonNode nestedChildNode;
                 if (this.hasChildAttributes(attr.getAttrId(), dataAttr)) {
@@ -119,7 +119,7 @@ public class JSONServerConfig {
         return childNode;
     }
 
-    private JsonNode createValueNode(TransDataAttribute attr) {
+    private JsonNode createValueNode(FieldConfiguration attr) {
         ObjectMapper om = new ObjectMapper();
         switch (attr.getDataType()) {
             case "NUMBER":
@@ -131,7 +131,7 @@ public class JSONServerConfig {
         }
     }
 
-    private void processJsonNode(JsonNode node, List<TransDataAttribute> dataAttr, String uri, String parentFieldName, Map<String, Object> storeAttr, StringBuilder errorMessage) {
+    private void processJsonNode(JsonNode node, List<FieldConfiguration> dataAttr, String uri, String parentFieldName, Map<String, Object> storeAttr, StringBuilder errorMessage) {
         for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> entry = it.next();
             String fieldName = entry.getKey();
@@ -139,7 +139,7 @@ public class JSONServerConfig {
             String fullFieldName = parentFieldName.isEmpty() ? fieldName : parentFieldName + "." + fieldName;
 
             boolean matchFound = false;
-            for (TransDataAttribute attr : dataAttr) {
+            for (FieldConfiguration attr : dataAttr) {
                 String dbFieldName = this.getFullFieldName(attr, dataAttr);
                 if (fullFieldName.equals(dbFieldName) && attr.getStateType() == StateType.REQUEST) {
                     if (this.isEndpointAllowed(uri, attr.getEndpoint().getUrl())) {
@@ -167,7 +167,7 @@ public class JSONServerConfig {
         }
     }
 
-    private void processJsonArray(JsonNode node, List<TransDataAttribute> dataAttr, String uri, String parentFieldName, Map<String, Object> storeAttr, StringBuilder errorMessage) {
+    private void processJsonArray(JsonNode node, List<FieldConfiguration> dataAttr, String uri, String parentFieldName, Map<String, Object> storeAttr, StringBuilder errorMessage) {
         for (int i = 0; i < node.size(); i++) {
             JsonNode arrayItem = node.get(i);
             if (arrayItem.isObject()) {
@@ -179,8 +179,8 @@ public class JSONServerConfig {
         }
     }
 
-    private boolean hasChildAttributes(Long attrId, List<TransDataAttribute> dataAttr) {
-        for (TransDataAttribute attr : dataAttr) {
+    private boolean hasChildAttributes(Long attrId, List<FieldConfiguration> dataAttr) {
+        for (FieldConfiguration attr : dataAttr) {
             if (attrId.equals(attr.getParentId())) {
                 return true;
             }
@@ -188,9 +188,9 @@ public class JSONServerConfig {
         return false;
     }
 
-    private String getFullFieldName(TransDataAttribute attr, List<TransDataAttribute> dataAttr) {
+    private String getFullFieldName(FieldConfiguration attr, List<FieldConfiguration> dataAttr) {
         StringBuilder fullFieldName = new StringBuilder(attr.getFieldTag());
-        TransDataAttribute parentAttr = this.getParentAttribute(attr, dataAttr);
+        FieldConfiguration parentAttr = this.getParentAttribute(attr, dataAttr);
 
         while (parentAttr != null) {
             fullFieldName.insert(0, parentAttr.getFieldTag() + ".");
@@ -200,11 +200,11 @@ public class JSONServerConfig {
         return fullFieldName.toString();
     }
 
-    private TransDataAttribute getParentAttribute(TransDataAttribute attr, List<TransDataAttribute> dataAttr) {
+    private FieldConfiguration getParentAttribute(FieldConfiguration attr, List<FieldConfiguration> dataAttr) {
         if (attr.getParentId() == null) {
             return null;
         }
-        for (TransDataAttribute parentAttr : dataAttr) {
+        for (FieldConfiguration parentAttr : dataAttr) {
             if (attr.getParentId().equals(parentAttr.getAttrId())) {
                 return parentAttr;
             }

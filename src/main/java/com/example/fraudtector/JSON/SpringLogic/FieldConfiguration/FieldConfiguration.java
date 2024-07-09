@@ -1,4 +1,4 @@
-package com.example.fraudtector.JSON.SpringLogic.TransDataAttribute;
+package com.example.fraudtector.JSON.SpringLogic.FieldConfiguration;
 
 import com.example.fraudtector.JSON.Constant.StateType;
 import com.example.fraudtector.JSON.SpringLogic.Endpoint.Endpoint;
@@ -11,8 +11,8 @@ import java.io.Serializable;
 @Setter
 @Getter
 @Entity
-@Table(name = "data_attribute")
-public class TransDataAttribute implements Serializable {
+@Table(name = "json_field_configuration")
+public class FieldConfiguration implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attrId;
