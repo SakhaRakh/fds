@@ -30,10 +30,12 @@ public class NetworkConfigurationService {
     public NetworkConfiguration updateNetworkConfiguration(NetworkConfiguration networkConfiguration) {
         return configRepository.save(networkConfiguration);
     }
+
     public NetworkConfiguration removeNetworkConfiguration(Long id) {
         configRepository.deleteById(id);
         return null;
     }
+
     public NetworkConfiguration getNetworkConfigurationById(Long id) {
         return configRepository.findById(id).orElse(null);
     }

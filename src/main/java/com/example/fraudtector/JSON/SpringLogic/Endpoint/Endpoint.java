@@ -40,5 +40,4 @@ public class Endpoint implements Serializable {
     private List<TransDataAttribute> dataAttributes;
 
 
-
 }

@@ -25,13 +25,13 @@ public class EndpointService {
         this.transSpecRepository = transSpecRepository;
     }
 
-    public List<Endpoint> findAll(){
+    public List<Endpoint> findAll() {
         return this.endpointRepository.findAll();
     }
 
-    public Endpoint findOne(Long endpointId){
+    public Endpoint findOne(Long endpointId) {
         Optional<Endpoint> endpoint = endpointRepository.findById(endpointId);
-        if(!endpoint.isPresent()){
+        if (!endpoint.isPresent()) {
             return null;
         }
         return endpoint.get();
@@ -45,7 +45,7 @@ public class EndpointService {
         return endpointRepository.findByConfig_ConfigId(configId);
     }
 
-    public Endpoint save(Endpoint reqBody){
+    public Endpoint save(Endpoint reqBody) {
         return this.endpointRepository.save(reqBody);
     }
 
@@ -111,7 +111,7 @@ public class EndpointService {
         }
     }
 
-    public void removeOne(Long endpointId){
+    public void removeOne(Long endpointId) {
         endpointRepository.deleteById(endpointId);
     }
 

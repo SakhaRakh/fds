@@ -1,7 +1,6 @@
 package com.example.fraudtector.JSON.SpringLogic.TransDataAttribute;
 
 import com.example.fraudtector.JSON.SpringLogic.Endpoint.EndpointService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +24,6 @@ public class TransDataAttributeService {
         this.endpointRepository = endpointRepository;
         this.endpointService = endpointService;
     }
-    @Autowired
-    private ModelMapper modelMapper;
 
     public List<TransDataAttribute> findAll() {
         return transDataAttributeRepository.findAll();
@@ -54,31 +51,27 @@ public class TransDataAttributeService {
         return transDataAttributeRepository.save(dataAttribute);
     }
 
-    public TransDataAttribute update(TransDataAttribute reqbody){
+    public TransDataAttribute update(TransDataAttribute reqbody) {
         this.validateDataId(reqbody.getAttrId());
         return this.transDataAttributeRepository.save(reqbody);
     }
 
-    protected void validateDataId(long id){
+    protected void validateDataId(long id) {
         this.transDataAttributeRepository
-            .findById(id)
-            .orElseThrow(()-> new RuntimeException("Data not found"));
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Data not found"));
     }
 
-    public TransDataAttribute findOne(Long attrId){
+    public TransDataAttribute findOne(Long attrId) {
         return transDataAttributeRepository.findById(attrId)
-        .orElseThrow(()-> new EntityNotFoundException("data not foundd"));
+                .orElseThrow(() -> new EntityNotFoundException("data not foundd"));
     }
 
     public List<TransDataAttribute> getDataAttributesByEndpointId(Long endpointId) {
         return transDataAttributeRepository.findByEndpoint_EndpointId(endpointId);
     }
 
-//    public List<TransDataAttribute> findByStateType(String stateType) {
-//        return transDataAttributeRepository.findByStateType(stateType);
-//    }
-
-    public void removeOne(Long attrId){
+    public void removeOne(Long attrId) {
         transDataAttributeRepository.deleteById(attrId);
     }
 

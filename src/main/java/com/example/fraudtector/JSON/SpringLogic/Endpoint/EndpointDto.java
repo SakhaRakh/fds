@@ -1,4 +1,5 @@
 package com.example.fraudtector.JSON.SpringLogic.Endpoint;
+
 import lombok.*;
 
 @Builder

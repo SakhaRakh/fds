@@ -9,8 +9,11 @@ import java.util.Optional;
 public interface TransDataAttributeRepository extends JpaRepository<TransDataAttribute, Long> {
 
     List<TransDataAttribute> findByStateType(StateType stateType);
+
     Optional<TransDataAttribute> findByAttribute(String attribute);
+
     Optional<TransDataAttribute> findByAttributeAndEndpoint_EndpointIdAndParentId(String attribute, Long endpointId, Long parentId);
+
     List<TransDataAttribute> findByEndpoint_EndpointId(Long endpointId);
 
 }

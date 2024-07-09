@@ -19,7 +19,6 @@ import reactor.netty.tcp.TcpServer;
 import java.io.IOException;
 import java.util.List;
 
-
 @Service
 public class Server {
     private final NetworkConfigurationService networkConfigurationService;
@@ -43,7 +42,6 @@ public class Server {
     @Bean
     public void startServers() {
         List<SchemeConfiguration> activeSchemeConfiguration = schemeConfigurationService.getAllSchemeConfiguration();
-
 
 
         for (SchemeConfiguration schemeConfiguration : activeSchemeConfiguration) {

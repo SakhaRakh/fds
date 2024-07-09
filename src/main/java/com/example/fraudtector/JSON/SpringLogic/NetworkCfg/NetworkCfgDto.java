@@ -1,4 +1,5 @@
 package com.example.fraudtector.JSON.SpringLogic.NetworkCfg;
+
 import com.example.fraudtector.JSON.SpringLogic.Endpoint.Endpoint;
 import lombok.Getter;
 import lombok.Setter;

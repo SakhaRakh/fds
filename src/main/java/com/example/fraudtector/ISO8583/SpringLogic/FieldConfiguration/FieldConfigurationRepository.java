@@ -6,9 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FieldConfigurationRepository extends JpaRepository<FieldConfiguration, Long>{
+public interface FieldConfigurationRepository extends JpaRepository<FieldConfiguration, Long> {
     List<FieldConfiguration> findAllByOrderByFieldIdAsc();
 
-    FieldConfiguration getFieldConfigurationByFieldId(int fieldId);
     List<FieldConfiguration> findAllBySchemeConfigurationId(Long schemeConfiguration);
 }

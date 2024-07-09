@@ -42,8 +42,6 @@ public class ServerHandler {
         }
     }
 
-
-
     public void handleClient(InputStream inputStream, Connection connection, List<FieldConfiguration> fieldConfigurations) throws IOException, ISOException {
         DataInputStream dataInputStream = new DataInputStream(inputStream);
 
@@ -261,12 +259,6 @@ public class ServerHandler {
         }
 
         return d;
-    }
-
-    private static void sendISOMessage(DataOutputStream outputStream, String isoMessage) throws IOException {
-        byte[] messageBytes = isoMessage.getBytes(StandardCharsets.UTF_8);
-        outputStream.write(messageBytes);
-        outputStream.flush();
     }
 
     public static BitSet hex2BitSet(byte[] b, int offset, int maxBits) {

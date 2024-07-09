@@ -26,6 +26,7 @@ public class NetworkCfgResource extends ResponseResourceEntity<NetworkCfg> {
     public NetworkCfgResource(NetworkCfgService networkCfgService) {
         this.networkCfgService = networkCfgService;
     }
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -80,7 +81,7 @@ public class NetworkCfgResource extends ResponseResourceEntity<NetworkCfg> {
     }
 
     @GetMapping("/find/spec/{specId}")
-    public List<NetworkCfg> getConfigBySpec(@PathVariable("specId") Long specId){
+    public List<NetworkCfg> getConfigBySpec(@PathVariable("specId") Long specId) {
         return networkCfgService.findBySpecId(specId);
     }
 }

@@ -28,10 +28,12 @@ public class FieldConfigurationService {
     public FieldConfiguration updateFieldConfiguration(FieldConfiguration fieldConfiguration) {
         return fieldConfigurationRepository.save(fieldConfiguration);
     }
+
     public FieldConfiguration removeFieldConfiguration(Long id) {
         fieldConfigurationRepository.deleteById(id);
         return null;
     }
+
     public FieldConfiguration getFieldConfigurationById(Long id) {
         return fieldConfigurationRepository.findById(id).orElse(null);
     }

@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/networkConfiguration")
 public class NetworkConfigurationResource {
-
     private final NetworkConfigurationService networkConfigurationService;
 
     @Autowired

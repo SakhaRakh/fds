@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/schemeConfiguration")
 public class SchemeConfigurationResource {
-
     private final SchemeConfigurationService service;
 
     @Autowired
@@ -38,12 +37,12 @@ public class SchemeConfigurationResource {
     }
 
     @PostMapping("/update")
-    public SchemeConfiguration updateSchemeConfiguration(@RequestBody SchemeConfiguration schemeConfiguration){
-         return service.updateSchemeConfiguration(schemeConfiguration);
+    public SchemeConfiguration updateSchemeConfiguration(@RequestBody SchemeConfiguration schemeConfiguration) {
+        return service.updateSchemeConfiguration(schemeConfiguration);
     }
 
     @DeleteMapping("/delete/{id}")
-    public SchemeConfiguration deleteSchemeConfiguration(@PathVariable Long id){
+    public SchemeConfiguration deleteSchemeConfiguration(@PathVariable Long id) {
         return service.removeSchemeConfiguration(id);
     }
 }

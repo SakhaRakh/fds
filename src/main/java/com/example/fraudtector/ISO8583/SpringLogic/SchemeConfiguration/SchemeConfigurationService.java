@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Service
 public class SchemeConfigurationService {
-
     private final SchemeConfigurationRepository repository;
 
     @Autowired
@@ -27,10 +26,12 @@ public class SchemeConfigurationService {
     public SchemeConfiguration updateSchemeConfiguration(SchemeConfiguration fieldConfiguration) {
         return repository.save(fieldConfiguration);
     }
+
     public SchemeConfiguration removeSchemeConfiguration(Long id) {
         repository.deleteById(id);
         return null;
     }
+
     public SchemeConfiguration getSchemeConfigurationById(Long id) {
         return repository.findById(id).orElse(null);
     }

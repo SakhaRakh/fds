@@ -30,17 +30,14 @@ public class NetworkCfgService {
     }
 
     public void update(NetworkCfgDto requestDto) {
-        // Convert specId to TransSpec object
         TransSpec spec = transSpecService.findById(requestDto.getSpecId())
                 .orElseThrow(() -> new RuntimeException("TransSpec not found with id: " + requestDto.getSpecId()));
 
-        // Create NetworkCfg entity
         NetworkCfg networkCfg = new NetworkCfg();
         networkCfg.setConfigId(requestDto.getConfigId());
         networkCfg.setPortNumber(requestDto.getPortNumber());
-        networkCfg.setSpecId(spec); // Ensure spec is set correctly
+        networkCfg.setSpecId(spec);
 
-        // Save or update NetworkCfg in repository
         networkCfgRepository.save(networkCfg);
     }
 
@@ -57,9 +54,9 @@ public class NetworkCfgService {
         networkCfgRepository.deleteById(configId);
     }
 
-    public List<NetworkCfg> findBySpecId(Long specId){
+    public List<NetworkCfg> findBySpecId(Long specId) {
         Optional<TransSpec> transSpec = transSpecService.findById(specId);
-        if(transSpec == null){
+        if (transSpec == null) {
             return new ArrayList<>();
         }
         return networkCfgRepository.findBySpecId(specId);

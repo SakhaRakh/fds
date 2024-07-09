@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.fraudtector.JSON.Domain.ResponseResourceEntity;
 
 import lombok.extern.slf4j.Slf4j;
+
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -40,7 +41,7 @@ public class EndpointResource extends ResponseResourceEntity<Object> {
     //error
     @GetMapping("list")
     public List<Endpoint> fetchAll() {
-            return endpointService.findAll();
+        return endpointService.findAll();
     }
 
 
@@ -111,7 +112,8 @@ public class EndpointResource extends ResponseResourceEntity<Object> {
         try {
             Endpoint endpoint = modelMapper.map(reqBody, Endpoint.class);
             endpointService.update(reqBody);
-            httpStatus = OK;            httpMessage = "Channel Endpoint updated Successfully";
+            httpStatus = OK;
+            httpMessage = "Channel Endpoint updated Successfully";
             return response(httpStatus, httpMessage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +152,7 @@ public class EndpointResource extends ResponseResourceEntity<Object> {
 
     @GetMapping("/find/config/{configId}")
     public List<Endpoint> getEndpointsByConfigId(@PathVariable Long configId) {
-        try { 
+        try {
             return endpointService.getEndpointsByConfigId(configId);
         } catch (Exception e) {
             log.error(e.getMessage());

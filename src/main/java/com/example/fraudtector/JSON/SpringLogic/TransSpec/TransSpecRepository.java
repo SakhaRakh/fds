@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransSpecRepository extends JpaRepository<TransSpec, Long> {
 
-        List<TransSpec> findByNameContainsOrderBySpecIdAsc(String name);
-    
+    List<TransSpec> findByNameContainsOrderBySpecIdAsc(String name);
+
 }

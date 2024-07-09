@@ -30,7 +30,7 @@ public class JSONServerConfig {
     @Autowired
     private TransDataAttributeService transDataAttributeService;
 
-    public Mono<Void> handle(HttpServerRequest request, HttpServerResponse response){
+    public Mono<Void> handle(HttpServerRequest request, HttpServerResponse response) {
         return request
                 .receive()
                 .aggregate()
@@ -78,7 +78,7 @@ public class JSONServerConfig {
         }
     }
 
-    private JsonNode createChildObjectNode(TransDataAttribute parentAttr, List<TransDataAttribute> dataAttr){
+    private JsonNode createChildObjectNode(TransDataAttribute parentAttr, List<TransDataAttribute> dataAttr) {
         ObjectMapper om = new ObjectMapper();
         JsonNode parentNode;
 
@@ -88,7 +88,7 @@ public class JSONServerConfig {
         } else if (parentAttr.getDataType().equals("OBJECT")) {
             parentNode = om.createObjectNode();
             for (TransDataAttribute attr : dataAttr) {
-                if(parentAttr.getAttrId().equals(attr.getParentId()) && attr.getStateType() == StateType.RESPONSE) {
+                if (parentAttr.getAttrId().equals(attr.getParentId()) && attr.getStateType() == StateType.RESPONSE) {
                     JsonNode childNode = this.hasChildAttributes(attr.getAttrId(), dataAttr)
                             ? this.createChildObjectNode(attr, dataAttr)
                             : this.createValueNode(attr);
@@ -101,7 +101,7 @@ public class JSONServerConfig {
         return parentNode;
     }
 
-    private JsonNode createArrayChildObjectNode(TransDataAttribute parentAttr, List<TransDataAttribute> dataAttr){
+    private JsonNode createArrayChildObjectNode(TransDataAttribute parentAttr, List<TransDataAttribute> dataAttr) {
         ObjectMapper om = new ObjectMapper();
         ObjectNode childNode = om.createObjectNode();
 
@@ -145,7 +145,7 @@ public class JSONServerConfig {
                     if (this.isEndpointAllowed(uri, attr.getEndpoint().getUrl())) {
                         matchFound = true;
                         if (this.hasChildAttributes(attr.getAttrId(), dataAttr)) {
-                            if (fieldValue.isObject()){
+                            if (fieldValue.isObject()) {
                                 this.processJsonNode(fieldValue, dataAttr, uri, fullFieldName, storeAttr, errorMessage);
                             } else if (fieldValue.isArray()) {
                                 this.processJsonArray(fieldValue, dataAttr, uri, fullFieldName, storeAttr, errorMessage);
@@ -160,7 +160,7 @@ public class JSONServerConfig {
                     }
                 }
             }
-            if(!matchFound) {
+            if (!matchFound) {
                 log.info("No Match found for: " + fullFieldName + ": " + fieldValue.asText());
                 errorMessage.append("No match found for: ").append(fullFieldName).append(". ");
             }
@@ -212,7 +212,7 @@ public class JSONServerConfig {
         return null;
     }
 
-    private boolean isEndpointAllowed(String uri, String endpointUrl){
+    private boolean isEndpointAllowed(String uri, String endpointUrl) {
         return uri.startsWith(endpointUrl);
     }
 }

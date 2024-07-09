@@ -12,40 +12,41 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class TransSpecService {
-     protected final TransSpecRepository transSpecRepository;
+    protected final TransSpecRepository transSpecRepository;
 
     @Autowired
     public TransSpecService(TransSpecRepository transSpecRepository) {
         this.transSpecRepository = transSpecRepository;
     }
-    public Iterable<TransSpec> findAll(){
+
+    public Iterable<TransSpec> findAll() {
         return transSpecRepository.findAll();
     }
 
-    public TransSpec save(TransSpec transSpec){
+    public TransSpec save(TransSpec transSpec) {
         return transSpecRepository.save(transSpec);
     }
 
-    public TransSpec update(TransSpec reqbody){
+    public TransSpec update(TransSpec reqbody) {
         this.validateDataId(reqbody.getSpecId());
         return this.transSpecRepository.save(reqbody);
     }
 
-    protected void validateDataId(Long id){
+    protected void validateDataId(Long id) {
         this.transSpecRepository
                 .findById(id)
-                .orElseThrow(()-> new RuntimeException("Data not found"));
+                .orElseThrow(() -> new RuntimeException("Data not found"));
     }
 
     public Optional<TransSpec> findById(Long specId) {
         return transSpecRepository.findById(specId);
     }
 
-    public List<TransSpec> findByName(String name){
+    public List<TransSpec> findByName(String name) {
         return transSpecRepository.findByNameContainsOrderBySpecIdAsc(name);
     }
-    
-    public void removeOne(Long specId){
+
+    public void removeOne(Long specId) {
         transSpecRepository.deleteById(specId);
     }
 

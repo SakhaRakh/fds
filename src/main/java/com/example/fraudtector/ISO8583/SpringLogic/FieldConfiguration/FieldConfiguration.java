@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "field_configuration")
+@Table(name = "iso_field_configuration")
 public class FieldConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "network_configuration")
+@Table(name = "iso_network_configuration")
 public class NetworkConfiguration {
 
     @Id

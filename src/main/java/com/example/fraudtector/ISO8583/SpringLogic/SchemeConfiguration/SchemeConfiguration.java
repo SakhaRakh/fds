@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "scheme_configuration")
+@Table(name = "iso_scheme_configuration")
 public class SchemeConfiguration {
 
     @Id
