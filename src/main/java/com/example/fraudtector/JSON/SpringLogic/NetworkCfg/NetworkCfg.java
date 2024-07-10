@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "network_cfg")
+@Table(name = "json_network_cfg")
 public class NetworkCfg implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

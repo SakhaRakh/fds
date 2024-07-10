@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "spec")
+@Table(name = "json_spec")
 public class TransSpec implements Serializable {
 
     @Id

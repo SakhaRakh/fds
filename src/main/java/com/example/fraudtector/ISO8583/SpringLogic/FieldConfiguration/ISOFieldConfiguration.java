@@ -11,8 +11,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "field_configuration")
-public class FieldConfiguration {
+@Table(name = "iso_field_configuration")
+public class ISOFieldConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

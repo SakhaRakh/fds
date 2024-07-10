@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "endpoint")
+@Table(name = "json_endpoint")
 public class Endpoint implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

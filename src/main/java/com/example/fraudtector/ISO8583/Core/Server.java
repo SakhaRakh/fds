@@ -1,8 +1,8 @@
 package com.example.fraudtector.ISO8583.Core;
 
 import com.example.fraudtector.ISO8583.Core.ServerHandler.ServerHandler;
-import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.FieldConfiguration;
-import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.FieldConfigurationService;
+import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.ISOFieldConfiguration;
+import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.ISOFieldConfigurationService;
 import com.example.fraudtector.ISO8583.SpringLogic.NetworkConfiguration.NetworkConfiguration;
 import com.example.fraudtector.ISO8583.SpringLogic.NetworkConfiguration.NetworkConfigurationService;
 import com.example.fraudtector.ISO8583.SpringLogic.SchemeConfiguration.SchemeConfiguration;
@@ -23,14 +23,14 @@ import java.util.List;
 @Service
 public class Server {
     private final NetworkConfigurationService networkConfigurationService;
-    private final FieldConfigurationService fieldConfigurationService;
+    private final ISOFieldConfigurationService ISOFieldConfigurationService;
     private final ServerHandler serverHandler;
     private final SchemeConfigurationService schemeConfigurationService;
 
     @Autowired
-    public Server(NetworkConfigurationService networkConfigurationService, FieldConfigurationService fieldConfigurationService, ServerHandler serverHandler, SchemeConfigurationService schemeConfigurationService) {
+    public Server(NetworkConfigurationService networkConfigurationService, ISOFieldConfigurationService ISOFieldConfigurationService, ServerHandler serverHandler, SchemeConfigurationService schemeConfigurationService) {
         this.networkConfigurationService = networkConfigurationService;
-        this.fieldConfigurationService = fieldConfigurationService;
+        this.ISOFieldConfigurationService = ISOFieldConfigurationService;
         this.serverHandler = serverHandler;
         this.schemeConfigurationService = schemeConfigurationService;
     }
@@ -48,7 +48,7 @@ public class Server {
 
         for (SchemeConfiguration schemeConfiguration : activeSchemeConfiguration) {
             List<NetworkConfiguration> networkConfigurations = networkConfigurationService.getNetworkConfigurationBySchemeConfiguration(schemeConfiguration.getId());
-            List<FieldConfiguration> fieldConfigurations = fieldConfigurationService.getFieldConfigurationsBySchemeConfiguration(schemeConfiguration.getId());
+            List<ISOFieldConfiguration> ISOFieldConfigurations = ISOFieldConfigurationService.getFieldConfigurationsBySchemeConfiguration(schemeConfiguration.getId());
             for (NetworkConfiguration portNumber : networkConfigurations) {
                 new Thread(() -> {
                     DisposableServer server = TcpServer.create()
@@ -58,7 +58,7 @@ public class Server {
                             .doOnConnection(connection -> {
                                 System.out.println("Client connected: " + connection.address());
                                 try {
-                                    serverHandler.handle(connection, fieldConfigurations);
+                                    serverHandler.handle(connection, ISOFieldConfigurations);
                                 } catch (IOException | ISOException e) {
                                     throw new RuntimeException(e);
                                 }

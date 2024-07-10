@@ -1,7 +1,7 @@
 package com.example.fraudtector.ISO8583.Core.ServerHandler;
 
-import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.FieldConfiguration;
-import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.FieldConfigurationService;
+import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.ISOFieldConfiguration;
+import com.example.fraudtector.ISO8583.SpringLogic.FieldConfiguration.ISOFieldConfigurationService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jpos.iso.ISOException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +18,21 @@ import java.util.stream.Collectors;
 @Service
 public class ServerHandler {
 
-    private final FieldConfigurationService fieldConfigurationService;
+    private final ISOFieldConfigurationService ISOFieldConfigurationService;
 
     @Autowired
-    public ServerHandler(FieldConfigurationService fieldConfigurationService) {
-        this.fieldConfigurationService = fieldConfigurationService;
+    public ServerHandler(ISOFieldConfigurationService ISOFieldConfigurationService) {
+        this.ISOFieldConfigurationService = ISOFieldConfigurationService;
     }
 
-    public void handle(Connection connection, List<FieldConfiguration> fieldConfigurations) throws IOException, ISOException {
+    public void handle(Connection connection, List<ISOFieldConfiguration> ISOFieldConfigurations) throws IOException, ISOException {
         try {
             connection.inbound()
                     .receive()
                     .asByteArray()
                     .subscribe(data -> {
                         try {
-                            handleClient(new ByteArrayInputStream(data), connection, fieldConfigurations);
+                            handleClient(new ByteArrayInputStream(data), connection, ISOFieldConfigurations);
                         } catch (IOException | ISOException e) {
                             System.out.println("Error" + e.getMessage());
                         }
@@ -44,7 +44,7 @@ public class ServerHandler {
 
 
 
-    public void handleClient(InputStream inputStream, Connection connection, List<FieldConfiguration> fieldConfigurations) throws IOException, ISOException {
+    public void handleClient(InputStream inputStream, Connection connection, List<ISOFieldConfiguration> ISOFieldConfigurations) throws IOException, ISOException {
         DataInputStream dataInputStream = new DataInputStream(inputStream);
 
         try {
@@ -77,10 +77,10 @@ public class ServerHandler {
                 for (int i = bmap.nextSetBit(2); i != -1; i = bmap.nextSetBit(i + 1)) {
                     int bitActive = i;
 
-                    List<FieldConfiguration> temp = fieldConfigurations.stream().filter(v1 -> v1.getFieldId() == bitActive).collect(Collectors.toList());
+                    List<ISOFieldConfiguration> temp = ISOFieldConfigurations.stream().filter(v1 -> v1.getFieldId() == bitActive).collect(Collectors.toList());
 
                     if (!temp.isEmpty()) {
-                        FieldConfiguration config = temp.get(0);
+                        ISOFieldConfiguration config = temp.get(0);
 
                         int embeddedLength = 0;
                         int nDigit = 0;
@@ -183,12 +183,12 @@ public class ServerHandler {
     }
 
     private Map<Integer, Object> getIntegerObjectMap(Map<Integer, Object> container, StringBuilder stringBuilder) {
-        List<FieldConfiguration> fieldConfigurations = fieldConfigurationService.getAllFieldConfiguration();
+        List<ISOFieldConfiguration> ISOFieldConfigurations = ISOFieldConfigurationService.getAllFieldConfiguration();
 
         Map<Integer, Object> objectTreeMap = new TreeMap<>(container);
 
         objectTreeMap.forEach((key, value) -> {
-            FieldConfiguration spec = getSpecContainerByFieldId(fieldConfigurations, key);
+            ISOFieldConfiguration spec = getSpecContainerByFieldId(ISOFieldConfigurations, key);
             if (spec != null) {
                 String formattedValue = formatFieldValue(value.toString(), spec);
                 stringBuilder.append(formattedValue);
@@ -199,14 +199,14 @@ public class ServerHandler {
         return objectTreeMap;
     }
 
-    private static FieldConfiguration getSpecContainerByFieldId(List<FieldConfiguration> fieldConfigurations, int fieldId) {
-        return fieldConfigurations.stream()
+    private static ISOFieldConfiguration getSpecContainerByFieldId(List<ISOFieldConfiguration> ISOFieldConfigurations, int fieldId) {
+        return ISOFieldConfigurations.stream()
                 .filter(spec -> spec.fieldId == fieldId)
                 .findFirst()
                 .orElse(null);
     }
 
-    private static String formatFieldValue(String value, FieldConfiguration spec) {
+    private static String formatFieldValue(String value, ISOFieldConfiguration spec) {
         String formattedValue = value;
         switch (spec.dataType) {
             case "LLCHAR":
